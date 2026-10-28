@@ -1,0 +1,66 @@
+<section class="tasks">
+  <header class="tasks__head">
+    <h2 class="label">Today's list</h2>
+    <span class="tasks__count mono">{{ store.openTasks().length }} open</span>
+  </header>
+
+  <form class="tasks__form" (submit)="$event.preventDefault(); add()">
+    <label class="sr-only" for="task-input">New task</label>
+    <input
+      #input
+      id="task-input"
+      type="text"
+      name="task"
+      autocomplete="off"
+      placeholder="What are you working on?"
+      [ngModel]="draft()"
+      (ngModelChange)="draft.set($event)"
+      (keydown)="onKey($event)"
+    />
+    <button class="btn btn--sm" type="submit" [disabled]="!draft().trim()">Add</button>
+  </form>
+
+  @if (store.tasks().length === 0) {
+    <p class="tasks__empty">
+      Nothing queued. Add one thing — a single, specific task beats a tidy list of ten.
+    </p>
+  } @else {
+    <ul class="tasks__list">
+      @for (task of store.tasks(); track task.id) {
+        <li class="task" [class.is-done]="task.done">
+          <button
+            class="task__check"
+            (click)="toggle(task.id)"
+            [attr.aria-label]="task.done ? 'Mark as not done' : 'Mark as done'"
+            [attr.aria-pressed]="task.done"
+          >
+            @if (task.done) {
+              <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">
+                <path
+                  d="M2 6.3 4.6 9 10 3.2"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            }
+          </button>
+          <span class="task__label" (click)="toggle(task.id)">{{ task.label }}</span>
+          <button class="task__remove" (click)="remove(task.id)" aria-label="Remove task">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 2l8 8M10 2l-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+          </button>
+        </li>
+      }
+    </ul>
+
+    @if (store.doneTasks().length > 0) {
+      <button class="tasks__clear" (click)="clearDone()">
+        Clear {{ store.doneTasks().length }} done
+      </button>
+    }
+  }
+</section>

@@ -1,0 +1,30 @@
+/* =========================================================
+   Tempo — webfonts (self-hosted, variable)
+   Space Grotesk (display) · Inter (UI) · Geist Mono (data)
+   Files live in src/fonts/ so Angular bundles and fingerprints
+   them, which keeps the URLs correct under any base href.
+   ========================================================= */
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Var.ttf') format('truetype-variations');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-Var.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('../fonts/GeistMono-Var.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

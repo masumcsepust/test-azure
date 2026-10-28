@@ -1,0 +1,75 @@
+<div class="timer" [style.--accent]="accent()">
+  <div class="timer__modes" role="tablist" aria-label="Timer mode">
+    <button
+      class="timer__mode"
+      [class.is-on]="mode() === 'focus'"
+      role="tab"
+      [attr.aria-selected]="mode() === 'focus'"
+      (click)="switchMode()"
+    >
+      Focus
+    </button>
+    <button
+      class="timer__mode"
+      [class.is-on]="mode() === 'break'"
+      role="tab"
+      [attr.aria-selected]="mode() === 'break'"
+      (click)="switchMode()"
+    >
+      Break
+    </button>
+  </div>
+
+  <div class="timer__ring">
+    <svg viewBox="0 0 280 280" class="ring" aria-hidden="true">
+      <defs>
+        <linearGradient id="tempoGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" [attr.stop-color]="accent()" stop-opacity="0.55" />
+          <stop offset="100%" [attr.stop-color]="accent()" stop-opacity="1" />
+        </linearGradient>
+      </defs>
+      <circle class="ring__track" cx="140" cy="140" r="118" />
+      <circle
+        class="ring__value"
+        cx="140"
+        cy="140"
+        r="118"
+        [attr.stroke]="'url(#tempoGrad)'"
+        [attr.stroke-dasharray]="circumference"
+        [attr.stroke-dashoffset]="dashOffset()"
+      />
+    </svg>
+
+    <div class="timer__readout">
+      <p class="timer__digits">{{ display() }}</p>
+      <p class="timer__caption label">{{ mode() === 'focus' ? 'Deep focus' : 'Recharge' }}</p>
+    </div>
+
+    <span class="timer__pulse" [class.is-on]="running()" aria-hidden="true"></span>
+  </div>
+
+  <div class="timer__controls">
+    <button class="btn" (click)="toggle()">
+      @if (running()) {
+        Pause
+      } @else {
+        Start focus
+      }
+    </button>
+    <button class="btn btn--ghost" (click)="reset()">Reset</button>
+  </div>
+
+  <div class="timer__presets" role="group" aria-label="Presets">
+    @for (p of presets; track p.key) {
+      <button
+        class="preset"
+        [class.is-on]="presetKey() === p.key"
+        [disabled]="running()"
+        (click)="setPreset(p.key)"
+      >
+        <span class="preset__k">{{ p.focus }}/{{ p.rest }}</span>
+        <span class="preset__l">{{ p.label }}</span>
+      </button>
+    }
+  </div>
+</div>
